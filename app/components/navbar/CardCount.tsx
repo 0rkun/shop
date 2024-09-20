@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FaBasketShopping } from "react-icons/fa6";
 
 const CardCount = () => {
-  const { cardPrdcts } = useCart(0);
+  const { cardPrdcts } = useCart();
   const router = useRouter();
 
   const [show, setShow] = useState(false);
