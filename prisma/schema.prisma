@@ -1,0 +1,69 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mongodb"
+    url      = env("DATABASE_URL")
+}
+
+model Account {
+    id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+    userId             String    @db.ObjectId
+    providerType       String
+    providerId         String
+    providerAccountId  String
+    refreshToken       String?   @db.String
+    accessToken        String?   @db.String
+    accessTokenExpires DateTime?
+    createdAt          DateTime  @default(now())
+    updatedAt          DateTime  @updatedAt
+    user               User      @relation(fields: [userId], references: [id])
+
+    @@unique([providerId, providerAccountId])
+}
+
+model Product {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    name        String
+    description String
+    price       Float
+    brand       String
+    category    String
+    inStock     Boolean
+    image       String
+    reviews     Review[]
+}
+
+model Review {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    userId      String   @db.ObjectId
+    productId   String   @db.ObjectId
+    rating      Int
+    comment     String
+    createdDate DateTime @default(now())
+
+    Product Product @relation(fields: [productId], references: [id])
+
+    User User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+    id             String    @id @default(auto()) @map("_id") @db.ObjectId
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    hashedPassword String?
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+    role           Role      @default(USER)
+
+    accounts Account[]
+    Review   Review[]
+}
+
+enum Role {
+    USER
+    ADMIN
+}
