@@ -15,7 +15,7 @@ import { User } from "@prisma/client";
 import { useEffect } from "react";
 
 interface RegisterClientProps {
-  currentUser: User | null | undefined;
+  currentUser: User | null | undefined|any;
 }
 
 const RegisterClient: React.FC<RegisterClientProps> = ({ currentUser }) => {
