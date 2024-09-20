@@ -7,7 +7,7 @@ import { signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 interface UserProps {
-  currentUser: User | null | undefined;
+  currentUser: User | null | undefined | any;
 }
 
 const User: React.FC<UserProps> = ({ currentUser }) => {
